@@ -1,7 +1,7 @@
 import { ChartData, TypeEnergySource } from "../types";
 
 const fuelColors = {
-  wind: "#D5EDFF",
+  wind: "#B8B8FF",
   solar: "#FFEE58",
   nuclear: "#9575CD",
   hydro: "#2389DA",
@@ -13,7 +13,7 @@ const fuelColors = {
   other: "#BDBDBD",
 };
 
-const clean= ["wind", "solar", "nuclear", "hydro", "biomass"];
+const clean = ["wind", "solar", "nuclear", "hydro", "biomass"];
 
 export const fuelData: (
   labels: TypeEnergySource[],
@@ -27,8 +27,8 @@ export const fuelData: (
       return {
         id: label,
         label: label,
-        value: visualValue,       
-        originalValue: values[i], 
+        value: visualValue,
+        originalValue: values[i],
         color: fuelColors[label] ?? "#90caf9",
       };
     })
@@ -37,7 +37,7 @@ export const fuelData: (
       const isCleanA = clean.includes(a.label);
       const isCleanB = clean.includes(b.label);
 
-      if (isCleanA && !isCleanB) return -1; 
-      if (!isCleanA && isCleanB) return 1;  
-      return 0; 
+      if (isCleanA && !isCleanB) return -1;
+      if (!isCleanA && isCleanB) return 1;
+      return 0;
     });

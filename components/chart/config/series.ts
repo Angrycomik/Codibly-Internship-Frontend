@@ -1,7 +1,7 @@
 import { DefaultizedPieValueType, PieSeries } from "@mui/x-charts";
 import { ringData } from "./ring";
 import { fuelData } from "./fuelData";
-import { TypeSeries, ChartData } from "../types";
+import { ChartData, TypeSeries } from "../types";
 
 export const series = ({
   cleanEnergyPercent,
@@ -9,22 +9,23 @@ export const series = ({
   values,
 }: TypeSeries): PieSeries[] => [
   {
-    innerRadius: 60,
-    outerRadius: 95,
+    innerRadius: 75,
+    outerRadius: 125,
     data: ringData(cleanEnergyPercent),
     arcLabel: (item: DefaultizedPieValueType) => {
       return `${item.value.toFixed(2)}%`;
     },
     highlightScope: { fade: "global", highlight: "item" },
     highlighted: { additionalRadius: 2 },
-    cornerRadius: 3,
+    cornerRadius: 10,
   },
   {
-    innerRadius: 95,
-    outerRadius: 120,
+    innerRadius: 130,
+    outerRadius: 160,
     data: fuelData(labels, values),
     valueFormatter: (value, context) => {
-      const realValue = fuelData(labels, values)[context.dataIndex].originalValue;
+      const realValue = fuelData(labels, values)[context.dataIndex]
+        .originalValue;
       return `${realValue ?? value}%`;
     },
     arcLabel: (item: DefaultizedPieValueType) => {
@@ -32,9 +33,9 @@ export const series = ({
       const displayValue = dataItem.originalValue ?? item.value;
       return `${item.label} ${displayValue.toFixed(2)}%`;
     },
-    arcLabelRadius: 140,
+    arcLabelRadius: 200,
     highlightScope: { fade: "global", highlight: "item" },
     highlighted: { additionalRadius: 2 },
-    cornerRadius: 3,
+    cornerRadius: 10,
   },
 ];

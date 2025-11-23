@@ -5,13 +5,17 @@ import { styled } from "@mui/material/styles";
 const StyledText = styled("text")(() => ({
   textAnchor: "middle",
   dominantBaseline: "central",
-  fontSize: 12,
+  fontSize: 14,
 }));
 
 const PieChartCenterLabel = ({ children }: { children: ReactNode }) => {
   const { width, height, left, top } = useDrawingArea();
   return (
-    <StyledText x={left + width / 2} y={top + height / 2}>
+    <StyledText
+      x={left + width / 2}
+      y={top + height / 2}
+      sx={{ fontWeight: "500" }}
+    >
       {children}
     </StyledText>
   );

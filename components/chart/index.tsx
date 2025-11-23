@@ -5,9 +5,9 @@ import {
   pieArcLabelClasses,
 } from "@mui/x-charts/PieChart";
 import Box from "@mui/material/Box";
-import { PieChartProps } from "@/components/types";
 import PieChartCenterLabel from "./PieChartCenterLabel";
 import { series } from "./config/series";
+import { PieChartProps } from "./types";
 
 export default function EnergyPieChart({
   values,
@@ -15,10 +15,17 @@ export default function EnergyPieChart({
   cleanEnergyPercent,
 }: PieChartProps) {
   return (
-    <Box>
+    <Box
+      sx={{
+        backgroundColor: "#f3f4f6",
+        borderRadius: "8px",
+        gap: "20px",
+        boxShadow: "8px 8px 9px -6px rgba(159, 164, 223, 1)",
+      }}
+    >
       <MuiPieChart
-        height={350}
-        width={350}
+        height={450}
+        width={470}
         series={series({
           cleanEnergyPercent,
           labels,
@@ -27,7 +34,7 @@ export default function EnergyPieChart({
         hideLegend
         sx={{
           [`& .${pieArcLabelClasses.root}`]: {
-            fontSize: "11px",
+            fontSize: "13px",
           },
         }}
       >
