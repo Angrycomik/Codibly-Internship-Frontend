@@ -13,6 +13,8 @@ const fuelColors = {
   other: "#BDBDBD",
 };
 
+const clean= ["wind", "solar", "nuclear", "hydro", "biomass"];
+
 export const fuelData: (
   labels: TypeEnergySource[],
   values: number[]
@@ -30,4 +32,12 @@ export const fuelData: (
         color: fuelColors[label] ?? "#90caf9",
       };
     })
-    .filter((item) => item.value > 0);
+    .filter((item) => item.value > 0)
+    .sort((a, b) => {
+      const isCleanA = clean.includes(a.label);
+      const isCleanB = clean.includes(b.label);
+
+      if (isCleanA && !isCleanB) return -1; 
+      if (!isCleanA && isCleanB) return 1;  
+      return 0; 
+    });
