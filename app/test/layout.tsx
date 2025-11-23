@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import Loading from "./loading";
-import Test from "./page";
+import Test from "../page";
 
 const layout = () => {
   return (
