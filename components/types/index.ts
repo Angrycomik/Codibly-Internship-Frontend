@@ -1,6 +1,7 @@
 export type ChartData = {
   label: string;
   value: number;
+  originalValue?: number;
 };
 
 export type PieChartProps = {

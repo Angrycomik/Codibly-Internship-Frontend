@@ -1,10 +1,10 @@
 import { ChartData, TypeEnergySource } from "../types";
 
 const fuelColors = {
-  wind: "#4FC3F7",
+  wind: "#D5EDFF",
   solar: "#FFEE58",
   nuclear: "#9575CD",
-  hydro: "#4DB6AC",
+  hydro: "#2389DA",
   biomass: "#8D6E63",
 
   gas: "#FF8A65",
@@ -18,10 +18,16 @@ export const fuelData: (
   values: number[]
 ) => ChartData[] = (labels, values) =>
   labels
-    .map((label, i) => ({
-      id: label,
-      label: label,
-      value: values[i],
-      color: fuelColors[label] ?? "#90caf9",
-    }))
+    .map((label, i) => {
+      const v = values[i];
+      const visualValue = v > 0 && v < 0.5 ? 0.5 : v;
+
+      return {
+        id: label,
+        label: label,
+        value: visualValue,       
+        originalValue: values[i], 
+        color: fuelColors[label] ?? "#90caf9",
+      };
+    })
     .filter((item) => item.value > 0);
