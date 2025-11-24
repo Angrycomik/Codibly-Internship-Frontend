@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Codibly Internship Task - Frontend
 
-## Getting Started
+This is a Next.js application made as a task for Codibly Internship 2025. It serves as the UI for visualizing energy data and optimal charging window, obtained from API.
 
-First, run the development server:
+## Hosting
+
+The application is deployed on Vercel.
+
+**App**: https://codibly-internship-frontend.vercel.app/
+
+*It will display loading window while backend on Render is waking up (1-2 min)*
+
+## Overview
+
+The application interacts with the backend API to provide two main features:
+
+Energy Mix Dashboard: Visualizes the energy generation mix for the current day and upcoming days using interactive Pie Charts.
+
+Optimal Charging Window Calculator: Allows users to input a duration (1-6 hours) to calculate the best time window for charging.
+
+## Tech Stack
+
+- **Next.js**
+- **React**
+- **Typescript**
+- **MUI**
+- **Jest**
+
+## Running
+
+To run the application locally:
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The website will be available at `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Testing
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The project includes unit and integration tests using Jest Testing Library.
 
-## Learn More
+To run the tests:
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run test
+```
