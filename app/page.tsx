@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Calculator from "../components/calculator";
 import { TypeEnergySource } from "../components/chart/types";
-import PieChartWithTitle from "../components/chart/PieChartWithTItle";
+import PieChartWithTitle from "../components/chart/PieChartWithTitle";
 import { CircularProgress } from "@mui/material";
 
 type TypeMix = { fuel: TypeEnergySource; perc: number };
