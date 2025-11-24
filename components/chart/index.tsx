@@ -25,7 +25,7 @@ export default function EnergyPieChart({
     >
       <MuiPieChart
         height={450}
-        width={470}
+        width={475}
         series={series({
           cleanEnergyPercent,
           labels,

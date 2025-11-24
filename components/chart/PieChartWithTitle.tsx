@@ -31,9 +31,9 @@ export default function PieChartWithTitle({
         })}
       </h2>
 
-      <div className="w-[470px] h-[450px] flex items-center justify-center">
+      <div className="w-[475px] h-[450px] flex items-center justify-center">
         {loading ? (
-          <Skeleton variant="rectangular" width={470} height={450} />
+          <Skeleton variant="rectangular" width={475} height={450} />
         ) : (
           <ClientPieChart
             values={mix.map((item) => item.perc)}
