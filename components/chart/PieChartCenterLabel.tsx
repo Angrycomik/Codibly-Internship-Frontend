@@ -21,7 +21,7 @@ const PieChartCenterLabel = ({
   return (
     <StyledText x={centerX} y={centerY}>
       <tspan x={centerX} dy="-0.6em" fontSize={24} fontWeight={600}>
-        {value}
+        {value}%
       </tspan>
 
       {words.map((word, index) => (
