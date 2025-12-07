@@ -19,7 +19,7 @@ export default function Calculator() {
       setIsLoading(true);
       setError("");
       const res = await fetch(
-        `https://codibly-internship-backend.onrender.com/api/optimal-window?window=${hours}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/optimal-window?window=${hours}`
       );
       if (!res.ok) throw new Error("Failed to fetch");
       const resData: CalculatorApiResponse = await res.json();

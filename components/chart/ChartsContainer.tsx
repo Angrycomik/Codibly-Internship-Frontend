@@ -16,7 +16,7 @@ export default function ChartsContainer() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://codibly-internship-backend.onrender.com/api/energy")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/energy`)
       .then((res) => res.json())
       .then((resData: TypeApiResponse[]) => {
         if (!resData || resData.length === 0) {
