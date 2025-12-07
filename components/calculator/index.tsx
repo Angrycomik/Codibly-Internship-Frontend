@@ -3,46 +3,74 @@
 import { useState } from "react";
 import { CalculatorApiResponse } from "./types";
 import SubmitButton from "./SubmitButton";
-import Input from "./Input";
-import Date from "./Date";
+import HoursSlider from "./Slider";
+import ChargingDuration from "./ChargingDuration";
+import ResultBox from "./ResultBox";
+import { formatDateTime } from "./utils/formatDate";
 
 export default function Calculator() {
-  const [hours, setHours] = useState<number | string>("");
+  const [hours, setHours] = useState(1);
   const [data, setData] = useState<CalculatorApiResponse | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>("");
 
+  const handleClick = async () => {
+    try {
+      setIsLoading(true);
+      setError("");
+      const res = await fetch(
+        `https://codibly-internship-backend.onrender.com/api/optimal-window?window=${hours}`
+      );
+      if (!res.ok) throw new Error("Failed to fetch");
+      const resData: CalculatorApiResponse = await res.json();
+      setData(resData);
+    } catch (err) {
+      setError(`Error: ${(err as Error).message}`);
+      setData(null);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleChange = (e: Event, value: number) => {
+    setHours(value as number);
+    setError("");
+  };
+
   return (
-    <div className="flex flex-col gap-4 items-center mt-10 p-4 shadow-[8px_8px_9px_-6px_rgba(159,164,223,1)] bg-gray-100 rounded-md">
-      <h2 className="text-xl font-medium">Optimal Charging Window Calculator</h2>
+    <div className="flex flex-col gap-4 max-w-[700px] w-full items-center mt-10 p-8 rounded-3xl bg-white [box-shadow:0_10px_20px_rgba(16,185,129,0.4)]">
+      <h2 className="text-xl font-medium">
+        Optimal Charging Window Calculator
+      </h2>
 
-      <div className="flex flex-col gap-2 w-full items-center">
-        <div className="flex gap-2">
-          <Input
-            error={error}
-            setError={setError}
-            setHours={setHours}
-            hours={hours}
-          />
+      <div className="flex flex-col gap-2 w-full">
+        <ChargingDuration hours={hours} />
 
-          <SubmitButton
-            error={error}
-            setError={setError}
-            setData={setData}
-            hours={hours}
-          />
-        </div>
+        <HoursSlider handleChange={handleChange} />
+
+        <SubmitButton
+          error={error}
+          isLoading={isLoading}
+          handleClick={handleClick}
+        />
 
         {data && (
-          <div className="w-full mt-4">
-            <Date label="Start" date={data.start} />
-            <Date label="End" date={data.end} />
+          <div className="mt-5 bg-linear-to-br from-emerald-500 to-teal-600 rounded-2xl p-6 text-white">
+            <div className="flex gap-4 w-full h-[120px]">
+              <ResultBox
+                title="Clean energy"
+                linearProgress
+                linearProgressValue={data.cleanEnergyPercent}
+              />
 
-            <p className="flex gap-3">
-              <span className="font-medium">Сlean energy, %:</span>{" "}
-              {data.cleanEnergyPercent}
-            </p>
+              <ResultBox title="Start time" date={formatDateTime(data.start)} />
+
+              <ResultBox title="End time" date={formatDateTime(data.end)} />
+            </div>
           </div>
         )}
+
+        {error && <div className="text-red-500 mt-2">{error}</div>}
       </div>
     </div>
   );

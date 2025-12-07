@@ -1,23 +1,32 @@
-import { Button } from "@mui/material";
-import { getOptimalWindow } from "./api/getOptimalWindow";
-import { TypeSubmitButtonProps } from "./types";
+import { Button, CircularProgress } from "@mui/material";
 
-const SubmitButton = ({
-  error,
-  setError,
-  setData,
-  hours,
-}: TypeSubmitButtonProps) => {
+type Props = {
+  isLoading: boolean;
+  error: string;
+  handleClick: () => void;
+};
+
+const SubmitButton = ({ isLoading, error, handleClick }: Props) => {
   return (
     <Button
-      onClick={() => getOptimalWindow({ setError, setData, hours })}
-      disabled={!!error}
+      onClick={handleClick}
+      disabled={isLoading || !!error}
       variant="contained"
       sx={{
         fontFamily: "var(--font-montserrat)",
+        bgcolor: "var(--color-emerald-500)",
+        "&:hover": {
+          bgcolor: "var(--color-emerald-600)",
+        },
+        padding: "14px 20px",
+        borderRadius: "12px",
       }}
     >
-      Get interval
+      {isLoading ? (
+        <CircularProgress size={24} sx={{ color: "#10B981" }} />
+      ) : (
+        "Find optimal charging time"
+      )}
     </Button>
   );
 };

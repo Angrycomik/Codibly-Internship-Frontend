@@ -4,7 +4,7 @@ import PieChart from "../components/chart";
 import ChartsContainer from "../components/chart/ChartsContainer";
 
 jest.mock("@mui/x-charts/PieChart", () => ({
-  PieChart: ({ children }: any) => <div data-test="chart">{children}</div>,
+  PieChart: ({ children }: any) => <svg data-test="chart">{children}</svg>,
 }));
 
 jest.mock("@mui/x-charts", () => ({
@@ -26,7 +26,7 @@ describe("PieChart tests", () => {
     expect(screen.getByText("6 December 2025")).toBeInTheDocument();
     expect(screen.getByText("100")).toBeInTheDocument();
   });
-  
+
   const mockFetch = jest.fn();
   global.fetch = mockFetch;
   it("displays error message when empty data received", async () => {

@@ -4,14 +4,6 @@ export type ChartData = {
   originalValue?: number;
 };
 
-export type PieChartProps = {
-  values: number[];
-  labels: TypeEnergySource[];
-  cleanEnergyPercent: number;
-  fullDate: string;
-  weekDay: string;
-};
-
 export type TypeEnergySource =
   | "wind"
   | "solar"
@@ -27,4 +19,13 @@ export type TypeSeries = {
   cleanEnergyPercent: number;
   labels: TypeEnergySource[];
   values: number[];
+};
+
+export type TypeMix = { fuel: TypeEnergySource; perc: number };
+
+export type PieChartData = {
+  cleanEnergyPercent: number;
+  weekDay: string;
+  fullDate: string;
+  mix: TypeMix[];
 };

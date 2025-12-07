@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { CircularProgress } from "@mui/material";
-import PieChart, { PieChartData, TypeMix } from ".";
+import { PieChartData, TypeMix } from "./types";
+import PieChart from ".";
 
 export type TypeApiResponse = {
   cleanEnergyPercent: number;
@@ -18,24 +19,26 @@ export default function ChartsContainer() {
     fetch("https://codibly-internship-backend.onrender.com/api/energy")
       .then((res) => res.json())
       .then((resData: TypeApiResponse[]) => {
-        if (resData && resData.length > 0) {
-          const chartData: PieChartData[] = resData.map((item) => {
-            const d = new Date(item.day);
-            return {
-              ...item,
-              weekDay: d.toLocaleDateString("en-UK", { weekday: "long" }),
-              fullDate: d.toLocaleDateString("en-UK", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              }),
-            };
-          });
-          setData(chartData);
-        } else {
+        if (!resData || resData.length === 0) {
           console.error("API returned empty data");
           setData([]);
+          return;
         }
+
+        const chartData: PieChartData[] = resData.map((item) => {
+          const d = new Date(item.day);
+          return {
+            ...item,
+            weekDay: d.toLocaleDateString("en-UK", { weekday: "long" }),
+            fullDate: d.toLocaleDateString("en-UK", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            }),
+          };
+        });
+
+        setData(chartData);
       })
       .catch(console.error)
       .finally(() => setLoading(false));
@@ -43,8 +46,9 @@ export default function ChartsContainer() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center py-10 w-full h-[400px] gap-1">
-        <CircularProgress /> <span>Loading charts data...</span>
+      <div className="flex justify-center items-center py-10 w-full h-[585px] gap-1">
+        <CircularProgress sx={{ color: "#10B981" }} />{" "}
+        <span>Loading charts data...</span>
       </div>
     );
   }

@@ -4,16 +4,7 @@ import { Box } from "@mui/material";
 import { PieChart as MuiPieChart } from "@mui/x-charts/PieChart";
 import PieChartCenterLabel from "./PieChartCenterLabel";
 import { series } from "./config/series";
-import { TypeEnergySource } from "./types";
-
-export type TypeMix = { fuel: TypeEnergySource; perc: number };
-
-export type PieChartData = {
-  cleanEnergyPercent: number;
-  weekDay: string;
-  fullDate: string;
-  mix: TypeMix[];
-};
+import { PieChartData } from "./types";
 
 type Props = {
   data: PieChartData;
@@ -23,11 +14,11 @@ export default function PieChart({ data }: Props) {
   return (
     <Box
       sx={{
-        backgroundColor: "#f3f4f6",
-        borderRadius: "8px",
+        backgroundColor: "white",
+        borderRadius: "24px",
         gap: "20px",
+        boxShadow: "0 10px 20px rgba(16, 185, 129, 0.4)",
         p: 3,
-        width: 450,
       }}
     >
       <div className="flex justify-between mb-4">

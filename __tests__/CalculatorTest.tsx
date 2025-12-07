@@ -1,61 +1,64 @@
+import "@testing-library/jest-dom";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import TextField from "@mui/material/TextField";
-import { inputConfig } from "../components/calculator/config/input";
-import Calculator from "@/components/calculator";
+import Calculator from "../components/calculator";
 
-global.fetch = jest.fn(() =>
-  Promise.resolve({
-    json: () =>
-      Promise.resolve({
-        cleanEnergyPercent: 100,
-        start: "2025-01-01T00:30:00.000Z",
-        end: "2025-01-01T01:00:00.000Z",
-      }),
-  })
-) as jest.Mock;
+global.fetch = jest.fn();
 
-describe("input and api call", () => {
-  it("renders input", () => {
-    render(<TextField {...inputConfig} />);
+describe("Calculator test", () => {
+  it("renders the calculator correctly", () => {
+    render(<Calculator />);
+
     expect(
-      screen.getByLabelText("Input hours from 1 to 6")
+      screen.getByText("Optimal Charging Window Calculator")
+    ).toBeInTheDocument();
+    expect(screen.getByText("Charging Duration")).toBeInTheDocument();
+
+    expect(screen.getAllByText("1h")[0]).toBeInTheDocument();
+
+    expect(
+      screen.getByRole("button", { name: /Find optimal charging time/i })
     ).toBeInTheDocument();
   });
 
+  it("fetches data correctly", async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        cleanEnergyPercent: 100,
+        start: "2025-01-01T00:30:00.000Z",
+        end: "2025-01-01T01:30:00.000Z",
+      }),
+    });
 
-  it("gets data with correct input", async () => {
     render(<Calculator />);
-    const input = screen.getByLabelText(/input hours/i);
-    const button = screen.getByRole("button", { name: /get interval/i });
 
-    fireEvent.change(input, { target: { value: "4" } });
+    const button = screen.getByRole("button", {
+      name: /Find optimal charging time/i,
+    });
+    fireEvent.click(button);
+
+    expect(global.fetch).toHaveBeenCalledTimes(1);
+    expect(global.fetch).toHaveBeenCalledWith(
+      expect.stringContaining("window=1")
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText("100%")).toBeInTheDocument();
+    });
+  });
+
+  it("returns error for empty data", async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({ ok: false });
+
+    render(<Calculator />);
+
+    const button = screen.getByRole("button", {
+      name: /Find optimal charging time/i,
+    });
     fireEvent.click(button);
 
     await waitFor(() => {
-      expect(screen.getByText("Start:")).toBeInTheDocument();
+      expect(screen.getByText(/Failed to fetch/i)).toBeInTheDocument();
     });
-    expect(global.fetch).toHaveBeenCalled();
-  });
-
-
-  it("returns error for empty data", () => {
-    render(<Calculator />);
-    const button = screen.getByRole("button", { name: /get interval/i });
-
-    fireEvent.click(button);
-
-    expect(screen.getByText("Please enter a number between 1 and 6.")).toBeInTheDocument();
-    expect(global.fetch).not.toHaveBeenCalled();
-  });
-
-  it("returns error for out of range number and disables button", () => {
-    render(<Calculator />);
-    const input = screen.getByLabelText(/input hours/i);
-
-    fireEvent.change(input, { target: { value: "10" } });
-
-    expect(screen.getByText("Please enter a number between 1 and 6.")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /get interval/i })).toBeDisabled();
-    expect(global.fetch).not.toHaveBeenCalled();
   });
 });
