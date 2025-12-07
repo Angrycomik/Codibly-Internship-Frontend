@@ -1,5 +1,5 @@
 export type ChartData = {
-  label: string;
+  label?: string;
   value: number;
   originalValue?: number;
 };
@@ -8,6 +8,8 @@ export type PieChartProps = {
   values: number[];
   labels: TypeEnergySource[];
   cleanEnergyPercent: number;
+  fullDate: string;
+  weekDay: string;
 };
 
 export type TypeEnergySource =

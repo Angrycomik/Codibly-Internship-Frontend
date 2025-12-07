@@ -1,46 +1,67 @@
 "use client";
 
-import {
-  PieChart as MuiPieChart,
-  pieArcLabelClasses,
-} from "@mui/x-charts/PieChart";
-import Box from "@mui/material/Box";
+import { Box } from "@mui/material";
+import { PieChart as MuiPieChart } from "@mui/x-charts/PieChart";
 import PieChartCenterLabel from "./PieChartCenterLabel";
 import { series } from "./config/series";
-import { PieChartProps } from "./types";
+import { TypeEnergySource } from "./types";
 
-export default function EnergyPieChart({
-  values,
-  labels,
-  cleanEnergyPercent,
-}: PieChartProps) {
+export type TypeMix = { fuel: TypeEnergySource; perc: number };
+
+export type PieChartData = {
+  cleanEnergyPercent: number;
+  weekDay: string;
+  fullDate: string;
+  mix: TypeMix[];
+};
+
+type Props = {
+  data: PieChartData;
+};
+
+export default function PieChart({ data }: Props) {
   return (
     <Box
       sx={{
         backgroundColor: "#f3f4f6",
         borderRadius: "8px",
         gap: "20px",
-        boxShadow: "8px 8px 9px -6px rgba(159, 164, 223, 1)",
+        p: 3,
+        width: 450,
       }}
     >
+      <div className="flex justify-between mb-4">
+        <span className="text-xl font-bold text-gray-800">{data.weekDay}</span>
+        <h3 className="text-xl font-bold text-gray-800">{data.fullDate}</h3>
+      </div>
+
       <MuiPieChart
-        height={450}
-        width={475}
+        height={400}
+        width={400}
         series={series({
-          cleanEnergyPercent,
-          labels,
-          values,
+          cleanEnergyPercent: data.cleanEnergyPercent,
+          labels: data.mix.map((item) => item.fuel),
+          values: data.mix.map((item) => item.perc),
         })}
-        hideLegend
-        sx={{
-          [`& .${pieArcLabelClasses.root}`]: {
-            fontSize: "13px",
+        slotProps={{
+          legend: {
+            direction: "horizontal",
+            position: { vertical: "bottom", horizontal: "center" },
+            sx: {
+              maxWidth: 300,
+              flexWrap: "wrap",
+              display: "flex",
+              justifyContent: "center",
+              fontSize: 14,
+              fontWeight: 500,
+            },
           },
         }}
       >
-        <PieChartCenterLabel>
-          Clean energy: {cleanEnergyPercent}%
-        </PieChartCenterLabel>
+        <PieChartCenterLabel
+          label="clean energy"
+          value={data.cleanEnergyPercent}
+        />
       </MuiPieChart>
     </Box>
   );
