@@ -56,7 +56,7 @@ export default function Calculator() {
 
         {data && (
           <div className="mt-5 bg-linear-to-br from-emerald-500 to-teal-600 rounded-2xl p-6 text-white">
-            <div className="flex gap-4 w-full h-[120px]">
+            <div className="flex gap-4 w-full h-[120px] h-auto flex-col sm:flex-row">
               <ResultBox
                 title="Clean energy"
                 linearProgress
